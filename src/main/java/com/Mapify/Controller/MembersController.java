@@ -2,12 +2,11 @@ package com.Mapify.Controller;
 
 
 import com.Mapify.Model.Members;
-import com.Mapify.Model.UserData;
+
 import com.Mapify.Model.UsersLoginDetails;
 import com.Mapify.services.UserLoginService;
 import com.Mapify.services.UserServices;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
