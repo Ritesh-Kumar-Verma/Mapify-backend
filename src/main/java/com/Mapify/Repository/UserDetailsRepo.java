@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserDetailsRepo extends JpaRepository<UserData,Integer> {
@@ -13,6 +14,6 @@ public interface UserDetailsRepo extends JpaRepository<UserData,Integer> {
     @Query("SELECT u.username FROM UserData u WHERE LOWER(u.username) LIKE LOWER(CONCAT('%', :usernamePart, '%'))")
     List<String> findUsernamesByUsernameContainingIgnoreCase(String usernamePart);
 
-    UserData findByUsername(String username);
+    Optional<UserData> findByUsername(String username);
 
 }

@@ -6,12 +6,11 @@ import com.Mapify.Model.UserData;
 import com.Mapify.Model.UsersLoginDetails;
 import com.Mapify.Repository.MembersRepo;
 import com.Mapify.Repository.UserDetailsRepo;
-import org.apache.catalina.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,15 +43,16 @@ public class UserServices {
         return userDetailsRepo.findUsernamesByUsernameContainingIgnoreCase(username);
     }
 
+
     public Members sendRequest(Integer id, String username) {
-        UserData user2 = userDetailsRepo.findByUsername(username);
-        if(user2 != null){
-            if(membersRepo.findByIdUser1AndIdUser2(id, user2.getId()) !=null ){
+        Optional<UserData> user2 = userDetailsRepo.findByUsername(username);
+        if(user2.isPresent()){
+            if(membersRepo.findByIdUser1AndIdUser2(id, user2.get().getId()) !=null ){
                 return null;
             }
             Members members = new Members();
             members.setIdUser1(id);
-            members.setIdUser2(user2.getId());
+            members.setIdUser2(user2.get().getId());
             members.setStatus("Pending");
 
             return membersRepo.save(members);
@@ -90,11 +90,11 @@ public class UserServices {
     }
 
     public String acceptRequest(UsersLoginDetails usersLoginDetails, String username) {
-        UserData user2 = userDetailsRepo.findByUsername(username);
-        if(user2 == null){
+        Optional<UserData> user2 = userDetailsRepo.findByUsername(username);
+        if(user2.isEmpty()){
             return "Not Found";
         }
-        Members m = membersRepo.findByIdUser1AndIdUser2( user2.getId(), usersLoginDetails.getId() );
+        Members m = membersRepo.findByIdUser1AndIdUser2( user2.get().getId(), usersLoginDetails.getId() );
         if(m.getStatus().equals("Pending")){
             m.setStatus("Accepted");
             membersRepo.save(m);
@@ -106,11 +106,9 @@ public class UserServices {
 
     @Transactional
     public String rejectRequest(Integer id, String username) {
-        UserData user2 = userDetailsRepo.findByUsername(username);
-        System.out.println("i am running");
-        if(user2 != null){
-            System.out.println("i am running too");
-           Long n = membersRepo.deleteByIdUser1AndIdUser2AndStatus(user2.getId() , id , "Pending");
+        Optional<UserData> user2 = userDetailsRepo.findByUsername(username);
+        if(user2.isPresent()){
+           Long n = membersRepo.deleteByIdUser1AndIdUser2AndStatus(user2.get().getId() , id , "Pending");
            if(n>=1){
                return "Rejected";
            }
@@ -137,11 +135,11 @@ public class UserServices {
 
 
     public List<Double> getLocation(String username) {
-        UserData user = userDetailsRepo.findByUsername(username);
+        Optional<UserData> user = userDetailsRepo.findByUsername(username);
         List<Double> result =new ArrayList<>();
-        if(user != null) {
-            result.add(user.getLatitude());
-            result.add(user.getLongitude());
+        if(user.isPresent()) {
+            result.add(user.get().getLatitude());
+            result.add(user.get().getLongitude());
             return result;
         }
         return result;

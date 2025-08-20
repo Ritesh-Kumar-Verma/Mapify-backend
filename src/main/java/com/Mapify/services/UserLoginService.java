@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserLoginService {
-    private boolean loginStatus;
 
 
     @Autowired
@@ -22,15 +21,12 @@ public class UserLoginService {
     UserDetailsRepo userDetailsRepo;
 
 
-    public boolean getLoginStatus(){
-        return loginStatus;
-    }
-
     public UsersLoginDetails addUserLoginDetails(UsersLoginDetails usersLoginDetails) {
         try {
+            if(userDetailsRepo.findByUsername(usersLoginDetails.getUsername()).isPresent() ){
+                return null;
+            }
             UsersLoginDetails savedUser = userLoginRepo.save(usersLoginDetails);
-            loginStatus = true;
-
 
             UserData userData = new UserData();
             userData.setId(savedUser.getId());
@@ -49,7 +45,6 @@ public class UserLoginService {
     public UsersLoginDetails verifyUser(UsersLoginDetails usersLoginDetails) {
         UsersLoginDetails user1= userLoginRepo.findByUsername(usersLoginDetails.getUsername());
         if(user1 != null && user1.getPassword().equals(usersLoginDetails.getPassword())){
-            loginStatus=true;
             return user1;
         }
         return null;

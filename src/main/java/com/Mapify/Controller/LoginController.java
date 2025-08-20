@@ -29,6 +29,9 @@ public class LoginController {
     @PostMapping("/signup")
     public ResponseEntity<UsersLoginDetails> addNewUser(@RequestBody UsersLoginDetails usersLoginDetails){
         UsersLoginDetails user = userLoginService.addUserLoginDetails(usersLoginDetails);
+        if(user == null){
+            return new ResponseEntity<>(null , HttpStatus.NOT_ACCEPTABLE);
+        }
         return  new ResponseEntity<>(user , HttpStatus.OK);
     }
 
