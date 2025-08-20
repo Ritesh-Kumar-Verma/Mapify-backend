@@ -1,17 +1,14 @@
-# Use a lightweight JDK image
 FROM eclipse-temurin:17-jdk-alpine
 
-# Set working directory
 WORKDIR /app
-
-# Copy project files
 COPY . .
 
-# Build the project using Maven wrapper
+# Force mvnw to be executable inside container
+RUN chmod +x mvnw
+
+# Build the project
 RUN ./mvnw clean package -DskipTests
 
-# Expose port 8080
 EXPOSE 8080
 
-# Run the Spring Boot app
 CMD ["java", "-jar", "target/mapify-0.0.1-SNAPSHOT.jar"]
