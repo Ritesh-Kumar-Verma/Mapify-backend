@@ -27,4 +27,6 @@ public interface MembersRepo extends JpaRepository<Members, Integer> {
     List<Integer> findMembers(Integer id);
 
 
+    int deleteByIdUser1AndIdUser2(Integer id1, int id2);
+
 }

@@ -144,4 +144,15 @@ public class UserServices {
         }
         return result;
     }
+    @Transactional
+    public int deleteMember(int id1, String username) {
+        Optional<UserData> user2= userDetailsRepo.findByUsername(username);
+        if(user2.isPresent()){
+            int id2 = user2.get().getId();
+            int i= membersRepo.deleteByIdUser1AndIdUser2(id1,id2);
+            membersRepo.deleteByIdUser1AndIdUser2(id2 , id1);
+            return i;
+        }
+        return 0;
+    }
 }

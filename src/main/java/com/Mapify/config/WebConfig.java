@@ -13,10 +13,15 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // all endpoints
-                        .allowedOrigins("https://Ritesh-Kumar-Verma.github.io")
+                        .allowedOrigins("https://Ritesh-Kumar-Verma.github.io","http://localhost:5173")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowCredentials(true);
             }
         };
     }
 }
+
+
+
+
+//for devlopment                             .allowedOrigins("https://Ritesh-Kumar-Verma.github.io")

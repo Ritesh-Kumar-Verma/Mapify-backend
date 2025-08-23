@@ -3,6 +3,7 @@ package com.Mapify.Controller;
 
 import com.Mapify.Model.Members;
 
+import com.Mapify.Model.UserData;
 import com.Mapify.Model.UsersLoginDetails;
 import com.Mapify.services.UserLoginService;
 import com.Mapify.services.UserServices;
@@ -127,6 +128,25 @@ public class MembersController {
                 return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(result,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null , HttpStatus.UNAUTHORIZED);
+    }
+
+    @DeleteMapping("/deletemember")
+    public ResponseEntity<String> deleteMember(@RequestBody UsersLoginDetails usersLoginDetails , @RequestParam String username){
+
+
+
+        UsersLoginDetails user = userLoginService.verifyUser(usersLoginDetails);
+
+        if(user != null){
+             int i = userServices.deleteMember(user.getId() , username);
+             if(i>0){
+                 return new ResponseEntity<>(username, HttpStatus.OK);
+             }
+             else{
+                 return new ResponseEntity<>("Member Not Found" , HttpStatus.NOT_FOUND);
+             }
         }
         return new ResponseEntity<>(null , HttpStatus.UNAUTHORIZED);
     }
