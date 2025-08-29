@@ -24,6 +24,11 @@ public class MembersController {
 
     @Autowired
     UserLoginService userLoginService;
+    
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("OK");
+    }
 
     @PostMapping("/search")
     public ResponseEntity<List<String>> searchUser(@RequestBody UsersLoginDetails usersLoginDetails, @RequestParam String username){
