@@ -193,7 +193,3 @@ Full Stack Developer
 React • Java • Spring Boot • PostgreSQL
 
 ---
-
-# 📜 License
-
-This project is licensed under the MIT License.
